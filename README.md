@@ -1,169 +1,169 @@
-# ESP8266 Datalogger com DHT22 e Display OLED SSD1306
+# ESP8266 Datalogger with DHT22 and OLED Display SSD1306
 
-Sistema completo de aquisição e logging de dados de temperatura e umidade usando ESP8266, sensor DHT22 e display OLED SSD1306, com conectividade WiFi, sincronização NTP, publicação MQTT e servidor HTTP.
+Complete temperature and humidity data acquisition and logging system using ESP8266, DHT22 sensor and SSD1306 OLED display, with WiFi connectivity, NTP synchronization, MQTT publishing and HTTP server.
 
-## Características
+## Features
 
-- **Aquisição de Dados**: Leitura periódica de temperatura e umidade com sensor DHT22
-- **Display OLED**: Visualização em tempo real dos dados no display SSD1306 128x64 (I2C)
-- **Conectividade WiFi**: Conexão automática e reconexão inteligente
-- **Sincronização de Tempo**: NTP sincronizado com servidores brasileiros
-- **Publicação MQTT**: Envio de dados para broker MQTT com batching e retry
-- **Servidor HTTP**: Interface web para visualização e configuração
-- **Armazenamento SPIFFS**: Backup local de medições quando offline
-- **Arquitetura Modular**: Código refatorado com separação clara de responsabilidades
-- **FreeRTOS**: Sistema multitarefa com prioridades otimizadas
+- **Data Acquisition**: Periodic temperature and humidity readings with DHT22 sensor
+- **OLED Display**: Real-time data visualization on SSD1306 128x64 display (I2C)
+- **WiFi Connectivity**: Automatic connection and smart reconnection
+- **Time Synchronization**: NTP synchronized with Brazilian servers
+- **MQTT Publishing**: Data transmission to MQTT broker with batching and retry
+- **HTTP Server**: Web interface for monitoring and configuration
+- **SPIFFS Storage**: Local backup of measurements when offline
+- **Modular Architecture**: Refactored code with clear separation of concerns
+- **FreeRTOS**: Multitasking system with optimized priorities
 
-## Componentes de Hardware
+## Hardware Components
 
-- **Microcontrolador**: ESP8266 (ESP-12E/NodeMCU)
-- **Sensor**: DHT22 (temperatura e umidade)
+- **Microcontroller**: ESP8266 (ESP-12E/NodeMCU)
+- **Sensor**: DHT22 (temperature and humidity)
 - **Display**: OLED SSD1306 128x64 (I2C)
-- **Conexões I2C**:
+- **I2C Connections**:
   - SDA: GPIO12
   - SCL: GPIO14
-  - Endereço OLED: 0x3C
-- **Sensor DHT22**: GPIO4
+  - OLED Address: 0x3C
+- **DHT22 Sensor**: GPIO4
 
-## Estrutura do Projeto
+## Project Structure
 
 ```
 esp8266_datalogger_dth22_ssd1306/
 ├── main/
-│   ├── main.c              # Ponto de entrada da aplicação
-│   ├── config.h            # Configurações gerais do sistema
-│   ├── types.h             # Definições de tipos de dados
-│   ├── globals.h/c         # Variáveis globais compartilhadas
-│   ├── wifi_manager.h/c    # Gerenciamento WiFi
-│   ├── ntp_manager.h/c     # Sincronização NTP
-│   ├── mqtt_manager.h/c    # Cliente MQTT
-│   ├── http_server.h/c     # Servidor HTTP
-│   ├── measurement.h/c     # Aquisição de dados DHT22
-│   ├── oled_display.h/c    # Controle do display OLED
-│   ├── spiffs_manager.h/c  # Gerenciamento do sistema de arquivos
-│   ├── dns_manager.h/c     # Cache DNS para broker MQTT
-│   ├── system_status.h/c   # Monitoramento do sistema
-│   └── time_cache.h/c      # Cache de timestamp NTP
+│   ├── main.c              # Application entry point
+│   ├── config.h            # System configuration
+│   ├── types.h             # Data type definitions
+│   ├── globals.h/c         # Shared global variables
+│   ├── wifi_manager.h/c    # WiFi management
+│   ├── ntp_manager.h/c     # NTP synchronization
+│   ├── mqtt_manager.h/c    # MQTT client
+│   ├── http_server.h/c     # HTTP server
+│   ├── measurement.h/c     # DHT22 data acquisition
+│   ├── oled_display.h/c    # OLED display control
+│   ├── spiffs_manager.h/c  # File system management
+│   ├── dns_manager.h/c     # DNS cache for MQTT broker
+│   ├── system_status.h/c   # System monitoring
+│   └── time_cache.h/c      # NTP timestamp cache
 ├── components/
-│   └── ssd1306/            # Driver do display OLED
+│   └── ssd1306/            # OLED display driver
 ├── CMakeLists.txt
 ├── partitions.csv
 └── sdkconfig
 ```
 
-## Configuração
+## Configuration
 
-### Requisitos de Software
+### Software Requirements
 
 - ESP8266_RTOS_SDK
 - CMake 3.5+
-- Toolchain Xtensa
+- Xtensa Toolchain
 
-### Configuração WiFi e MQTT
+### WiFi and MQTT Configuration
 
-⚠️ **IMPORTANTE - Segurança**: Este projeto usa o sistema de configuração do ESP-IDF que armazena credenciais no arquivo `sdkconfig`. Este arquivo **NÃO deve ser commitado** no Git pois contém senhas e informações sensíveis.
+⚠️ **IMPORTANT - Security**: This project uses ESP-IDF configuration system which stores credentials in the `sdkconfig` file. This file **MUST NOT be committed** to Git as it contains passwords and sensitive information.
 
-#### Método 1: Usando menuconfig (Recomendado)
+#### Method 1: Using menuconfig (Recommended)
 
 ```bash
 idf.py menuconfig
 ```
 
-Navegue até "Component config" → "Project Configuration" e configure:
+Navigate to "Component config" → "Project Configuration" and configure:
 
-- **WiFi SSID**: Nome da rede WiFi
-- **WiFi Password**: Senha da rede
-- **MQTT Broker**: Endereço do broker MQTT (ex: mqtt://broker.hivemq.com:1883)
-- **MQTT Username**: Usuário MQTT
-- **MQTT Password**: Senha MQTT
-- **MQTT Topic Data**: Tópico para publicação de dados (ex: sensors/temperature/data)
-- **MQTT Topic Status**: Tópico para status do sistema (ex: sensors/temperature/status)
-- **Sensor ID**: Identificador único do sensor (ex: ESP8266-001)
-- **Measurement Interval**: Intervalo entre medições em ms (ex: 30000 = 30s)
+- **WiFi SSID**: WiFi network name
+- **WiFi Password**: Network password
+- **MQTT Broker**: MQTT broker address (e.g., mqtt://broker.hivemq.com:1883)
+- **MQTT Username**: MQTT username
+- **MQTT Password**: MQTT password
+- **MQTT Topic Data**: Topic for data publishing (e.g., sensors/temperature/data)
+- **MQTT Topic Status**: Topic for system status (e.g., sensors/temperature/status)
+- **Sensor ID**: Unique sensor identifier (e.g., ESP8266-001)
+- **Measurement Interval**: Interval between measurements in ms (e.g., 30000 = 30s)
 
-#### Método 2: Usando arquivo de configuração local
+#### Method 2: Using local configuration file
 
-1. Copie o arquivo de exemplo:
+1. Copy the example file:
 ```bash
 cp sdkconfig.defaults sdkconfig.defaults.local
 ```
 
-2. Edite `sdkconfig.defaults.local` com suas credenciais (este arquivo é gitignored)
+2. Edit `sdkconfig.defaults.local` with your credentials (this file is gitignored)
 
-3. Execute o build normalmente:
+3. Run build normally:
 ```bash
 idf.py build
 ```
 
-#### ⚠️ Checklist de Segurança antes do Git Push
+#### ⚠️ Security Checklist before Git Push
 
-Antes de fazer push para o GitHub, **sempre verifique**:
+Before pushing to GitHub, **always verify**:
 
 ```bash
-# Verificar se sdkconfig não está sendo rastreado
+# Check if sdkconfig is not being tracked
 git status | grep sdkconfig
 
-# Se aparecer, remova do staging
+# If it appears, remove from staging
 git reset HEAD sdkconfig sdkconfig.old
 
-# Verifique o .gitignore
+# Verify .gitignore
 cat .gitignore | grep sdkconfig
 ```
 
-### Compilação e Flash
+### Build and Flash
 
 ```bash
-# Configurar
+# Configure
 idf.py menuconfig
 
-# Compilar
+# Build
 idf.py build
 
-# Fazer upload
+# Flash
 idf.py -p /dev/ttyUSB0 flash
 
-# Monitorar
+# Monitor
 idf.py -p /dev/ttyUSB0 monitor
 ```
 
-## Funcionalidades Principais
+## Main Features
 
-### Sistema de Tasks FreeRTOS
+### FreeRTOS Task System
 
-O sistema opera com múltiplas tasks com prioridades otimizadas:
+The system operates with multiple tasks with optimized priorities:
 
-| Task | Prioridade | Função |
-|------|-----------|--------|
-| oled_display | 7 | Atualização do display OLED |
-| wifi_monitor | 6 | Monitoramento de conexão WiFi |
-| ntp_sync | 5 | Sincronização NTP |
-| mqtt_monitor | 4 | Monitoramento MQTT |
-| measurement | 3 | Aquisição de dados DHT22 |
-| http_server | 2 | Servidor HTTP |
-| system_status | 1 | Status do sistema |
+| Task | Priority | Function |
+|------|----------|----------|
+| oled_display | 7 | OLED display updates |
+| wifi_monitor | 6 | WiFi connection monitoring |
+| ntp_sync | 5 | NTP synchronization |
+| mqtt_monitor | 4 | MQTT monitoring |
+| measurement | 3 | DHT22 data acquisition |
+| http_server | 2 | HTTP server |
+| system_status | 1 | System status |
 
-### Publicação MQTT
+### MQTT Publishing
 
-- **Batching**: Agrupamento de mensagens para otimizar transmissão
-- **Retry**: Reenvio automático em caso de falha
-- **Backlog**: Armazenamento em SPIFFS quando offline
-- **Keep-alive**: Heartbeat periódico para manter conexão
+- **Batching**: Message grouping to optimize transmission
+- **Retry**: Automatic resend on failure
+- **Backlog**: SPIFFS storage when offline
+- **Keep-alive**: Periodic heartbeat to maintain connection
 
-### Display OLED
+### OLED Display
 
-Exibe em tempo real:
-- Temperatura e umidade atuais
-- Status da conexão WiFi
-- Status da conexão MQTT
-- Timestamp da última medição
+Displays in real-time:
+- Current temperature and humidity
+- WiFi connection status
+- MQTT connection status
+- Last measurement timestamp
 
-### Sistema de Backup SPIFFS
+### SPIFFS Backup System
 
-- Armazenamento ring buffer de até 20 medições
-- Sincronização automática quando reconectar ao MQTT
-- Persistência de dados durante quedas de energia
+- Ring buffer storage for up to 20 measurements
+- Automatic synchronization when reconnecting to MQTT
+- Data persistence during power outages
 
-## Formato dos Dados MQTT
+## MQTT Data Format
 
 ```json
 {
@@ -174,62 +174,62 @@ Exibe em tempo real:
 }
 ```
 
-## Monitoramento e Debug
+## Monitoring and Debug
 
-O sistema fornece logs detalhados via UART:
+The system provides detailed logs via UART:
 
 ```bash
 idf.py monitor
 ```
 
-Tags de log disponíveis:
-- `MAIN` - Inicialização principal
-- `WIFI` - Eventos WiFi
-- `NTP` - Sincronização de tempo
-- `MQTT` - Publicação e status MQTT
-- `MEASUREMENT` - Leituras do sensor
-- `OLED` - Atualizações do display
-- `SPIFFS` - Operações do sistema de arquivos
-- `HTTP` - Requisições HTTP
+Available log tags:
+- `MAIN` - Main initialization
+- `WIFI` - WiFi events
+- `NTP` - Time synchronization
+- `MQTT` - MQTT publishing and status
+- `MEASUREMENT` - Sensor readings
+- `OLED` - Display updates
+- `SPIFFS` - File system operations
+- `HTTP` - HTTP requests
 
-## API HTTP
+## HTTP API
 
-O servidor HTTP expõe os seguintes endpoints:
+The HTTP server exposes the following endpoints:
 
-- `GET /` - Página principal com status do sistema
-- `GET /data` - Últimas medições (JSON)
-- `GET /status` - Status completo do sistema (JSON)
+- `GET /` - Main page with system status
+- `GET /data` - Latest measurements (JSON)
+- `GET /status` - Complete system status (JSON)
 
-## Resolução de Problemas
+## Troubleshooting
 
-### WiFi não conecta
-- Verificar SSID e senha no menuconfig
-- Verificar sinal WiFi e compatibilidade (2.4GHz apenas)
+### WiFi doesn't connect
+- Check SSID and password in menuconfig
+- Verify WiFi signal and compatibility (2.4GHz only)
 
-### MQTT não publica
-- Verificar conectividade com broker
-- Validar credenciais MQTT
-- Checar tópicos configurados
+### MQTT doesn't publish
+- Check broker connectivity
+- Validate MQTT credentials
+- Verify configured topics
 
-### Display não funciona
-- Verificar conexões I2C (SDA=GPIO12, SCL=GPIO14)
-- Confirmar endereço I2C do display (padrão: 0x3C)
+### Display doesn't work
+- Check I2C connections (SDA=GPIO12, SCL=GPIO14)
+- Confirm display I2C address (default: 0x3C)
 
-### DHT22 retorna erro
-- Verificar conexão no GPIO4
-- Aguardar 2 segundos após power-on
-- Checar alimentação do sensor (3.3V-5V)
+### DHT22 returns error
+- Check connection on GPIO4
+- Wait 2 seconds after power-on
+- Check sensor power supply (3.3V-5V)
 
-## Licença
+## License
 
-Este projeto está licenciado sob os termos da licença MIT.
+This project is licensed under the terms of the MIT License.
 
-## Autor
+## Author
 
 elbastos(at)gmail.com
 
-Desenvolvido para aplicações IoT de monitoramento ambiental.
+Developed for environmental monitoring IoT applications.
 
-## Versão
+## Version
 
-**Firmware Version**: 1.0 
+**Firmware Version**: 1.0
