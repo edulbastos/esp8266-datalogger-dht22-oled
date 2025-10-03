@@ -164,9 +164,10 @@ Displays in real-time:
 
 ### SPIFFS Backup System
 
-- Ring buffer storage for up to 20 measurements
+- Ring buffer storage (configurable, default: 1000 measurements)
 - Automatic synchronization when reconnecting to MQTT
 - Data persistence during power outages
+- Alert when buffer reaches 80% capacity
 
 ## MQTT Data Format
 
