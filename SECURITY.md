@@ -1,120 +1,120 @@
-# Guia de Segurança
+# Security Guide
 
-## Informações Sensíveis
+## Sensitive Information
 
-Este projeto requer credenciais sensíveis que **NUNCA** devem ser commitadas no repositório:
+This project requires sensitive credentials that should **NEVER** be committed to the repository:
 
-### Arquivos com Dados Sensíveis (já no .gitignore)
+### Files with Sensitive Data (already in .gitignore)
 
-- `sdkconfig` - Contém WiFi password, MQTT password
-- `sdkconfig.old` - Backup do sdkconfig
-- `.env` - Variáveis de ambiente locais
-- `build/` - Pode conter artefatos com credenciais compiladas
+- `sdkconfig` - Contains WiFi password, MQTT password
+- `sdkconfig.old` - Backup of sdkconfig
+- `.env` - Local environment variables
+- `build/` - May contain artifacts with compiled credentials
 
-### Como Configurar Credenciais com Segurança
+### How to Configure Credentials Securely
 
-#### Opção 1: Menuconfig (Padrão ESP-IDF)
+#### Option 1: Menuconfig (ESP-IDF Standard)
 ```bash
 idf.py menuconfig
 ```
-Configure suas credenciais em "Component config" → "Project Configuration"
+Configure your credentials in "Component config" → "Project Configuration"
 
-#### Opção 2: Arquivo Local (Não commitado)
+#### Option 2: Local File (Not committed)
 ```bash
 cp sdkconfig.defaults sdkconfig.defaults.local
-# Edite sdkconfig.defaults.local com suas credenciais
+# Edit sdkconfig.defaults.local with your credentials
 ```
 
-## Checklist Antes de Fazer Push
+## Checklist Before Pushing
 
-✅ **SEMPRE verifique antes de fazer git push:**
+✅ **ALWAYS verify before git push:**
 
 ```bash
-# 1. Verifique o status
+# 1. Check status
 git status
 
-# 2. Certifique-se de que estes arquivos NÃO aparecem:
+# 2. Make sure these files DO NOT appear:
 #    - sdkconfig
 #    - sdkconfig.old
 #    - .env
-#    - arquivos em build/
+#    - files in build/
 
-# 3. Verifique o que será commitado
+# 3. Verify what will be committed
 git diff --cached
 
-# 4. Se encontrar credenciais, remova imediatamente:
-git reset HEAD <arquivo_sensível>
+# 4. If you find credentials, remove immediately:
+git reset HEAD <sensitive_file>
 ```
 
-## O Que Fazer Se Acidentalmente Commitar Credenciais
+## What to Do If You Accidentally Commit Credentials
 
-Se você acidentalmente commitou credenciais:
+If you accidentally committed credentials:
 
-### 1. Se ainda NÃO fez push:
+### 1. If you have NOT pushed yet:
 ```bash
-# Desfazer o último commit mantendo as mudanças
+# Undo the last commit keeping the changes
 git reset --soft HEAD~1
 
-# Remover arquivo do staging
+# Remove file from staging
 git reset HEAD sdkconfig
 
-# Fazer novo commit sem o arquivo sensível
+# Make new commit without the sensitive file
 git add .
-git commit -m "Seu commit sem credenciais"
+git commit -m "Your commit without credentials"
 ```
 
-### 2. Se JÁ fez push:
+### 2. If you have ALREADY pushed:
 
-⚠️ **AÇÃO URGENTE NECESSÁRIA:**
+⚠️ **URGENT ACTION REQUIRED:**
 
-1. **Trocar IMEDIATAMENTE todas as credenciais expostas:**
-   - Senha WiFi
-   - Senha MQTT
-   - Qualquer outro secret
+1. **Change IMMEDIATELY all exposed credentials:**
+   - WiFi password
+   - MQTT password
+   - Any other secrets
 
-2. **Limpar o histórico do Git:**
+2. **Clean Git history:**
 ```bash
-# Usar git filter-branch ou BFG Repo Cleaner
+# Use git filter-branch or BFG Repo Cleaner
 git filter-branch --force --index-filter \
   "git rm --cached --ignore-unmatch sdkconfig" \
   --prune-empty --tag-name-filter cat -- --all
 
-# Force push (cuidado!)
+# Force push (careful!)
 git push origin --force --all
 ```
 
-3. **Considere recriar o repositório** se as credenciais forem críticas
+3. **Consider recreating the repository** if credentials are critical
 
-## Práticas Recomendadas
+## Best Practices
 
-- ✅ Use senhas fortes e únicas
-- ✅ Revise o diff antes de cada commit
-- ✅ Configure o Git para ignorar arquivos sensíveis globalmente
-- ✅ Use git hooks para prevenir commits acidentais
-- ✅ Mantenha o `.gitignore` atualizado
-- ❌ Nunca commite arquivos de configuração com credenciais reais
-- ❌ Nunca faça push de `sdkconfig` ou `sdkconfig.old`
+- ✅ Use strong and unique passwords
+- ✅ Review the diff before each commit
+- ✅ Configure Git to ignore sensitive files globally
+- ✅ Use git hooks to prevent accidental commits
+- ✅ Keep `.gitignore` updated
+- ❌ Never commit configuration files with real credentials
+- ❌ Never push `sdkconfig` or `sdkconfig.old`
 
-## Git Hooks (Opcional)
+## Git Hooks (Optional)
 
-Crie um pre-commit hook para verificar automaticamente:
+Create a pre-commit hook to automatically verify:
 
 ```bash
 #!/bin/bash
 # .git/hooks/pre-commit
 
 if git diff --cached --name-only | grep -E "sdkconfig|\.env"; then
-    echo "❌ ERRO: Tentativa de commitar arquivo sensível detectada!"
-    echo "Arquivos bloqueados: sdkconfig, .env"
+    echo "❌ ERROR: Attempt to commit sensitive file detected!"
+    echo "Blocked files: sdkconfig, .env"
     exit 1
 fi
 ```
 
-Torne o hook executável:
+Make the hook executable:
 ```bash
 chmod +x .git/hooks/pre-commit
 ```
 
-## Suporte
+## Support
 
-Se você tiver dúvidas sobre segurança ou acidentalmente expor credenciais, abra uma issue (sem incluir as credenciais!) ou entre em contato com o mantenedor.
+If you have questions about security or accidentally expose credentials, open an issue (without including the credentials!) or contact the maintainer.
