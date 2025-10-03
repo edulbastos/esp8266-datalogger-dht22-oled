@@ -46,8 +46,15 @@ static esp_err_t init_system(void) {
 
     // Inicializar display OLED
     ssd1306_128x64_i2c_initEx(I2C_MASTER_SCL_IO, I2C_MASTER_SDA_IO, I2C_OLED_ADDR);
+#ifdef CONFIG_ENABLE_OLED_DISPLAY
     ssd1306_clearScreen();
     ESP_LOGI(TAG, "OLED display initialized successfully");
+#else
+    // Limpar tela e desligar display
+    ssd1306_clearScreen();
+    ssd1306_displayOff();
+    ESP_LOGI(TAG, "OLED display cleared and turned off");
+#endif
 
     // Inicializar NVS
     esp_err_t ret = nvs_flash_init();
@@ -117,10 +124,12 @@ void app_main(void) {
         ESP_LOGE(TAG, "WiFi initialization failed, saving data to SPIFFS");
     }
 
-    // Criar tasks 
+    // Criar tasks
     create_task_checked(wifi_monitor_task, "wifi_monitor", TASK_STACK_SMALL, NULL, PRIO_WIFI);
     create_task_checked(ntp_sync_task, "ntp_sync", TASK_STACK_SMALL, NULL, PRIO_NTP);
+#ifdef CONFIG_ENABLE_OLED_DISPLAY
     create_task_checked(oled_display_task, "oled_display", TASK_STACK_SMALL, NULL, PRIO_OLED);
+#endif
     create_task_checked(measurement_task, "measurement", TASK_STACK_SMALL, NULL, PRIO_MEASUREMENT);
     create_task_checked(mqtt_monitor_task, "mqtt_monitor", TASK_STACK_SMALL, NULL, PRIO_MQTT_MON);
     create_task_checked(mqtt_publish_task, "mqtt_publish", TASK_STACK_MED, NULL, PRIO_MQTT_MON);

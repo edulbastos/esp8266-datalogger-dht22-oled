@@ -7,7 +7,7 @@ Complete temperature and humidity data acquisition and logging system using ESP8
 ## Features
 
 - **Data Acquisition**: Periodic temperature and humidity readings with DHT22 sensor
-- **OLED Display**: Real-time data visualization on SSD1306 128x64 display (I2C)
+- **OLED Display**: Real-time data visualization on SSD1306 128x64 display (I2C) with optional power saving mode
 - **WiFi Connectivity**: Automatic connection and smart reconnection
 - **Time Synchronization**: NTP synchronized with Brazilian servers
 - **MQTT Publishing**: Data transmission to MQTT broker with batching and retry
@@ -71,7 +71,7 @@ esp8266_datalogger_dth22_ssd1306/
 idf.py menuconfig
 ```
 
-Navigate to "Component config" → "Project Configuration" and configure:
+Navigate to "Datalogger Config" and configure:
 
 - **WiFi SSID**: WiFi network name
 - **WiFi Password**: Network password
@@ -82,6 +82,7 @@ Navigate to "Component config" → "Project Configuration" and configure:
 - **MQTT Topic Status**: Topic for system status (e.g., sensors/temperature/status)
 - **Sensor ID**: Unique sensor identifier (e.g., ESP8266-001)
 - **Measurement Interval**: Interval between measurements in ms (e.g., 30000 = 30s)
+- **Enable OLED Display**: Enable/disable the OLED display (disable to save power)
 
 #### Method 2: Using local configuration file
 
@@ -159,6 +160,8 @@ Displays in real-time:
 - MQTT connection status
 - Last measurement timestamp
 
+**Power Saving Mode**: The OLED display can be completely disabled via Kconfig to reduce power consumption. When disabled, the display is cleared and turned off during system initialization, saving energy in battery-powered deployments.
+
 ### SPIFFS Backup System
 
 - Ring buffer storage for up to 20 measurements
@@ -216,6 +219,7 @@ The HTTP server exposes the following endpoints:
 ### Display doesn't work
 - Check I2C connections (SDA=GPIO12, SCL=GPIO14)
 - Confirm display I2C address (default: 0x3C)
+- Verify "Enable OLED Display" is enabled in menuconfig
 
 ### DHT22 returns error
 - Check connection on GPIO4

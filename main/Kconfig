@@ -101,4 +101,11 @@ config DNS_CACHE_TTL_SECONDS
     default 86400
     help
         Tempo de vida do cache do IP do broker em segundos (default = 86400 = 24h).
+
+config ENABLE_OLED_DISPLAY
+    bool "Enable OLED Display"
+    default y
+    help
+        Habilita o display OLED SSD1306. Desabilite esta opção para economizar energia
+        desligando completamente o visor.
 endmenu
