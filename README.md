@@ -1,4 +1,4 @@
-# ESP8266 Datalogger with DHT22 and OLED Display SSD1306
+# ESP8266 DHT22 Datalogger with OLED Display SSD1306
 
 Complete temperature and humidity data acquisition and logging system using ESP8266, DHT22 sensor and SSD1306 OLED display, with WiFi connectivity, NTP synchronization, MQTT publishing and HTTP server.
 
