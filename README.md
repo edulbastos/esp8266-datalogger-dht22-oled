@@ -2,6 +2,8 @@
 
 Complete temperature and humidity data acquisition and logging system using ESP8266, DHT22 sensor and SSD1306 OLED display, with WiFi connectivity, NTP synchronization, MQTT publishing and HTTP server.
 
+![Hardware Setup](docs/images/hardware_setup.jpeg)
+
 ## Features
 
 - **Data Acquisition**: Periodic temperature and humidity readings with DHT22 sensor
