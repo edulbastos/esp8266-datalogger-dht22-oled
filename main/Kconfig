@@ -1,0 +1,104 @@
+menu "Datalogger Config"
+
+config WIFI_SSID
+    string "WiFi SSID"
+    default "your_wifi_ssid"
+    help
+        SSID da rede WiFi para conexão.
+
+config WIFI_PASS
+    string "WiFi Password"
+    default "your_wifi_password"
+    help
+        Senha da rede WiFi.
+
+config MQTT_BROKER
+    string "MQTT Broker URI"
+    default "mqtt://your_broker_address:1883"
+    help
+        URI do broker MQTT.
+
+config MQTT_USERNAME
+    string "MQTT Username"
+    default "your_mqtt_username"
+    help
+        Usuário para autenticação MQTT.
+
+config MQTT_PASSWORD
+    string "MQTT Password"
+    default "your_mqtt_password"
+    help
+        Senha para autenticação MQTT.
+
+config MQTT_TOPIC_DATA
+    string "MQTT Topic Data"
+    default "datalogger/measurements"
+    help
+        Tópico MQTT para envio de dados.
+
+config MQTT_TOPIC_STATUS
+    string "MQTT Topic Status"
+    default "datalogger/status"
+    help
+        Tópico MQTT para status.
+
+config MQTT_CLIENT_ID_PREFIX
+    string "MQTT Client ID Prefix"
+    default "esp8266_dl"
+    help
+        Prefixo do client ID MQTT.
+
+config MQTT_BATCH_SIZE
+    int "MQTT Batch Size"
+    default 5
+    help
+        Máximo de mensagens por batch.
+
+config MQTT_BATCH_DELAY_MS
+    int "MQTT Batch Delay (ms)"
+    default 2000
+    help
+        Delay entre batches MQTT (ms).
+
+config MQTT_MESSAGE_DELAY_MS
+    int "MQTT Message Delay (ms)"
+    default 200
+    help
+        Delay entre mensagens MQTT (ms).
+
+config MQTT_RECONNECT_DELAY_MS
+    int "MQTT Reconnect Delay (ms)"
+    default 10000
+    help
+        Delay para reconexão MQTT (ms).
+
+config SENSOR_ID
+    string "Sensor ID"
+    default "TEMP_HUM_001"
+    help
+        Identificador do sensor.
+
+config MEASUREMENT_INTERVAL_MS
+    int "Measurement Interval (ms)"
+    default 10000
+    help
+        Intervalo entre medições (ms).
+
+config MAX_MEASUREMENTS_BUFFER
+    int "Max Measurements Buffer"
+    default 1000
+    help
+        Tamanho máximo do buffer de medições.
+
+config FIRMWARE_VERSION
+    string "Firmware Version"
+    default "1.0.0"
+    help
+        Versão do firmware.
+
+config DNS_CACHE_TTL_SECONDS
+    int "DNS cache TTL (seconds)"
+    default 86400
+    help
+        Tempo de vida do cache do IP do broker em segundos (default = 86400 = 24h).
+endmenu

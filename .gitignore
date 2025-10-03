@@ -1,0 +1,49 @@
+# Build artifacts
+build/
+*.bin
+*.elf
+*.map
+*.o
+*.a
+*.so
+
+# IDE and editor configs
+.vscode/
+.vs/
+.idea/
+*.swp
+*.swo
+*~
+
+# SDK configuration files (contains sensitive data like WiFi passwords)
+sdkconfig
+sdkconfig.old
+sdkconfig.defaults.local
+
+# Environment files
+.env
+.env.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Backup and temporary files
+*.bak
+*.tmp
+*~
+
+# SPIFFS partition files (may contain logged data)
+spiffs/
+*.dat
+
+# Python bytecode
+__pycache__/
+*.pyc
+*.pyo
+
+# Old/deprecated files
+olds/
+
+# KConfig (partial line, keeping for compatibility)
+KConfig

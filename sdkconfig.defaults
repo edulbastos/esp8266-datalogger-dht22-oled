@@ -1,0 +1,27 @@
+# Example SDK configuration file
+# Copy this file to sdkconfig.defaults.local and configure with your settings
+# The .local file is gitignored and won't be committed
+
+# WiFi Configuration
+# CONFIG_WIFI_SSID="your_wifi_ssid"
+# CONFIG_WIFI_PASS="your_wifi_password"
+
+# MQTT Configuration
+# CONFIG_MQTT_BROKER="mqtt://your_broker_address:1883"
+# CONFIG_MQTT_USERNAME="your_mqtt_username"
+# CONFIG_MQTT_PASSWORD="your_mqtt_password"
+# CONFIG_MQTT_TOPIC_DATA="sensors/temperature/data"
+# CONFIG_MQTT_TOPIC_STATUS="sensors/temperature/status"
+# CONFIG_MQTT_CLIENT_ID_PREFIX="ESP8266"
+# CONFIG_MQTT_RECONNECT_DELAY_MS=5000
+
+# Sensor Configuration
+# CONFIG_SENSOR_ID="ESP8266-001"
+# CONFIG_MEASUREMENT_INTERVAL_MS=30000
+# CONFIG_MAX_MEASUREMENTS_BUFFER=20
+
+# Firmware Version
+# CONFIG_FIRMWARE_VERSION="2.0"
+
+# DNS Cache Configuration
+# CONFIG_DNS_CACHE_TTL_SECONDS=86400

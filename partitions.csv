@@ -1,0 +1,16 @@
+# partitions.csv
+# Tabela de partições customizada para ESP8266 Datalogger
+# Name,     Type, SubType, Offset,  Size,    Flags
+
+# Bootloader e partition table (automático)
+nvs,        data, nvs,     0x9000,  0x6000,
+phy_init,   data, phy,     0xf000,  0x1000,
+
+# Aplicação principal
+factory,    app,  factory, 0x10000, 0x100000,
+
+# Sistema de arquivos SPIFFS para datalogger (1MB)
+spiffs,     data, spiffs,  0x110000, 0x100000,
+
+# Espaço livre para futuras atualizações OTA ou dados
+# free_space, 0x210000 até 0x400000 (quase 2MB livres)
