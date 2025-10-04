@@ -158,8 +158,9 @@ Displays in real-time:
 - Current temperature and humidity
 - WiFi connection status
 - Local timestamp (GMT configurable)
+- User-configurable string
 - Number of messages sent/stored
-- A special icon blinks after each measurement
+- Special icon that blinks after each measurement
 
 **Power Saving Mode**: The OLED display can be completely disabled via Kconfig to reduce power consumption. When disabled, the display is cleared and turned off during system initialization, saving energy in battery-powered deployments.
 
