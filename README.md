@@ -18,9 +18,9 @@ Complete temperature and humidity data acquisition and logging system using ESP8
 
 ## Hardware Components
 
-- **Microcontroller**: ESP8266 (ESP-12E/NodeMCU)
+- **Microcontroller**: ESP8266 NodeMCU (Ideaspark ESP8266MOD)
 - **Sensor**: DHT22 (temperature and humidity)
-- **Display**: OLED SSD1306 128x64 (I2C)
+- **Display**: Integrated OLED SSD1306 128x64 (I2C)
 - **I2C Connections**:
   - SDA: GPIO12
   - SCL: GPIO14
