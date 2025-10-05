@@ -11,7 +11,7 @@ Complete temperature and humidity data acquisition and logging system using ESP8
 - **WiFi Connectivity**: Automatic connection and smart reconnection
 - **Time Synchronization**: NTP synchronized with Brazilian servers
 - **MQTT Publishing**: Data transmission to MQTT broker with batching and retry
-- **HTTP Server**: Web interface for monitoring and configuration
+- **HTTP Server**: Web interface for monitoring
 - **SPIFFS Storage**: Local backup of measurements when offline
 - **Modular Architecture**: Refactored code with clear separation of concerns
 - **FreeRTOS**: Multitasking system with optimized priorities
